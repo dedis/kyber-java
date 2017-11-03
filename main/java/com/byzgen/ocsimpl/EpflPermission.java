@@ -1,4 +1,4 @@
-package ch.epfl.dedis.ocs;
+package com.byzgen.ocsimpl;
 
 import java.util.Collections;
 import java.util.EnumSet;

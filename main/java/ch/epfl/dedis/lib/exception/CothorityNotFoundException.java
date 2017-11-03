@@ -1,4 +1,4 @@
-package ch.epfl.dedis.lib;
+package ch.epfl.dedis.lib.exception;
 
 public class CothorityNotFoundException extends CothorityException {
     public CothorityNotFoundException() {

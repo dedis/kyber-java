@@ -1,4 +1,4 @@
-package ch.epfl.dedis.lib;
+package ch.epfl.dedis.lib.exception;
 
 import com.google.protobuf.InvalidProtocolBufferException;
 

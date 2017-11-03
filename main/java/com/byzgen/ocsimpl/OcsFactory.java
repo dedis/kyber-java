@@ -1,8 +1,9 @@
-package ch.epfl.dedis.ocs;
+package com.byzgen.ocsimpl;
 
-import ch.epfl.dedis.lib.CothorityCommunicationException;
+import ch.epfl.dedis.lib.exception.CothorityCommunicationException;
 import ch.epfl.dedis.lib.Roster;
 import ch.epfl.dedis.lib.ServerIdentity;
+import ch.epfl.dedis.ocs.OnchainSecrets;
 
 import java.net.URI;
 import java.util.ArrayList;
@@ -70,8 +71,11 @@ public class OcsFactory {
 
         Roster roster = new Roster(servers);
         if (initialiseNewChain) {
-            return new OnchainSecrets(roster);
+            // TODO
+            throw new CothorityCommunicationException("Need to implement darc here");
+//            return new OnchainSecrets(roster);
         }
-        return new OnchainSecrets(roster, genesis);
+//        return new OnchainSecrets(roster, genesis);
+        return null;
     }
 }

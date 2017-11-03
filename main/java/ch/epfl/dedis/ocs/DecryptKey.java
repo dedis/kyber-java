@@ -1,10 +1,11 @@
-package ch.epfl.dedis.lib;
+package ch.epfl.dedis.ocs;
 
-import ch.epfl.dedis.ocs.Account;
+import ch.epfl.dedis.lib.crypto.Point;
+import ch.epfl.dedis.lib.crypto.Scalar;
+import ch.epfl.dedis.lib.darc.Signer;
+import ch.epfl.dedis.lib.exception.CothorityCryptoException;
 import ch.epfl.dedis.proto.OCSProto;
 
-import javax.crypto.Cipher;
-import javax.crypto.spec.SecretKeySpec;
 import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.List;
@@ -19,42 +20,42 @@ import java.util.List;
  */
 
 public class DecryptKey {
-    public List<Crypto.Point> Cs;
-    public Crypto.Point XhatEnc;
-    public Crypto.Point X;
+    public List<Point> Cs;
+    public Point XhatEnc;
+    public Point X;
 
     public DecryptKey() {
         Cs = new ArrayList<>();
     }
 
-    public DecryptKey(OCSProto.DecryptKeyReply reply, Crypto.Point X) {
+    public DecryptKey(OCSProto.DecryptKeyReply reply, Point X) {
         this();
-        reply.getCsList().forEach(C -> Cs.add(new Crypto.Point(C)));
-        XhatEnc = new Crypto.Point(reply.getXhatEnc());
+        reply.getCsList().forEach(C -> Cs.add(new Point(C)));
+        XhatEnc = new Point(reply.getXhatenc());
         this.X = X;
     }
 
-    public byte[] getKeyMaterial(OCSProto.OCSWrite write, Account reader) throws Exception {
-        List<Crypto.Point> Cs = new ArrayList<>();
-        write.getCsList().forEach(cs -> Cs.add(new Crypto.Point(cs)));
+    public byte[] getKeyMaterial(OCSProto.Write write, Signer reader) throws Exception {
+        List<Point> Cs = new ArrayList<>();
+        write.getCsList().forEach(cs -> Cs.add(new Point(cs)));
 
         // Use our private key to decrypt the re-encryption key and use it
         // to recover the symmetric key.
-        Crypto.Scalar xc = reader.Scalar.reduce();
-        Crypto.Scalar xcInv = xc.negate();
-        Crypto.Point XhatDec = xcInv.mul(X);
-        Crypto.Point Xhat = XhatEnc.add(XhatDec);
-        Crypto.Point XhatInv = Xhat.negate();
+        Scalar xc = reader.GetPrivate().reduce();
+        Scalar xcInv = xc.negate();
+        Point XhatDec = xcInv.scalarMult(X);
+        Point Xhat = XhatEnc.add(XhatDec);
+        Point XhatInv = Xhat.negate();
 
         byte[] keyMaterial = "".getBytes();
-        for (Crypto.Point C : Cs) {
-            Crypto.Point keyPointHat = C.add(XhatInv);
+        for (Point C : Cs) {
+            Point keyPointHat = C.add(XhatInv);
             try {
                 byte[] keyPart = keyPointHat.pubLoad();
                 int lastpos = keyMaterial.length;
                 keyMaterial = Arrays.copyOfRange(keyMaterial, 0, keyMaterial.length + keyPart.length);
                 System.arraycopy(keyPart, 0, keyMaterial, lastpos, keyPart.length);
-            } catch (Crypto.CryptoException c) {
+            } catch (CothorityCryptoException c) {
                 c.printStackTrace();
                 System.out.println("couldn't extract data! " + c.toString());
             }

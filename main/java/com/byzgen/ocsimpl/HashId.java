@@ -1,8 +1,8 @@
-package ch.epfl.dedis.ocs;
+package com.byzgen.ocsimpl;
 
 import javax.annotation.Nonnull;
 
-public interface SkipBlockId {
+public interface HashId {
     /**
      * Return binary form of block ID used by skipchain
      * @return binary form of block ID

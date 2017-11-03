@@ -1,6 +1,9 @@
-package ch.epfl.dedis.ocs;
+package ch.epfl.dedis.byzgen;
 
-import ch.epfl.dedis.lib.CothorityCommunicationException;
+import ch.epfl.dedis.lib.exception.CothorityCommunicationException;
+import ch.epfl.dedis.ocs.LocalRosters;
+import ch.epfl.dedis.ocs.OnchainSecrets;
+import com.byzgen.ocsimpl.OcsFactory;
 import org.junit.jupiter.api.Test;
 
 import java.net.URI;

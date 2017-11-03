@@ -1,4 +1,4 @@
-package ch.epfl.dedis.ocs;
+package com.byzgen.ocsimpl;
 
 import javax.annotation.Nonnull;
 import java.security.PublicKey;

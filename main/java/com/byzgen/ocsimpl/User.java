@@ -1,9 +1,8 @@
-package ch.epfl.dedis.ocs;
+package com.byzgen.ocsimpl;
 
 
 import javax.annotation.Nonnull;
 import java.security.SignatureException;
-import java.util.UUID;
 
 /**
  * Representation of EPFL skipchain user.
