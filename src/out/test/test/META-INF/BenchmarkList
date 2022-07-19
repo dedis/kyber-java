@@ -1,0 +1,1 @@
+JMH S 57 ch.epfl.dedis.kyber.curve.ed25519.benchmarks.Ed25519Bench S 88 ch.epfl.dedis.kyber.curve.ed25519.benchmarks.jmh_generated.Ed25519Bench_pointMul_jmhTest S 8 pointMul S 11 AverageTime E A 1 1 1 E I 1 5 T 3 1 s E I 1 5 T 3 2 s E I 1 1 E E E E E E U 11 NANOSECONDS E E 

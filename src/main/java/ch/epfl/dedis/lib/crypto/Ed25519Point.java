@@ -60,7 +60,8 @@ public class Ed25519Point implements Point {
 
     public Point mul(Scalar s) {
         element = element.toP3();
-        element.precompute(true);
+        //TODO: changed this expression from element.precompute(true) to this. Please have a look.
+        element.toP3PrecomputeDouble();
         return new Ed25519Point(element.scalarMultiply(s.getLittleEndian()));
     }
 
