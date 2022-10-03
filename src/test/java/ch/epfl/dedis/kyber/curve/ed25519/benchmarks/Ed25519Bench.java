@@ -1,11 +1,9 @@
 package ch.epfl.dedis.kyber.curve.ed25519.benchmarks;
 
-import ch.epfl.dedis.kyber.Point;
-import ch.epfl.dedis.kyber.Scalar;
-import ch.epfl.dedis.kyber.curve.ed25519.point;
-import ch.epfl.dedis.kyber.curve.ed25519.scalar;
-import javafx.util.Pair;
-import org.openjdk.jmh.*;
+import ch.epfl.dedis.kyber.EdPoint;
+import ch.epfl.dedis.kyber.EdScalar;
+import ch.epfl.dedis.kyber.curve.ed25519.Point;
+import ch.epfl.dedis.kyber.curve.ed25519.Scalar;
 import org.openjdk.jmh.annotations.*;
 
 import java.security.SecureRandom;
@@ -19,20 +17,18 @@ import java.util.concurrent.TimeUnit;
 @State(Scope.Benchmark)
 public class Ed25519Bench {
 
-    private Scalar s1, s2;
-    private Point p1, p2;
+    private EdScalar s1, s2;
+    private EdPoint p1, p2;
     private byte[] s1b, p1b;
 
     @Setup
-    public void prepare() {
-        this.s1 = (new scalar()).Pick(new SecureRandom());
-        this.s2 = (new scalar()).Pick(new SecureRandom());
-        Pair<byte[], Exception> p = this.s1.MarshalBinary();
-        this.s1b = p.getKey();
-        this.p1 = (new point()).Pick(new SecureRandom());
-        this.p2 = (new point()).Pick(new SecureRandom());
-        p = this.p1.MarshalBinary();
-        this.p1b = p.getKey();
+    public void prepare() throws Exception {
+        this.s1 = (new Scalar()).Pick(new SecureRandom());
+        this.s2 = (new Scalar()).Pick(new SecureRandom());
+        this.s1b = this.s1.MarshalBinary();
+        this.p1 = (new Point()).Pick(new SecureRandom());
+        this.p2 = (new Point()).Pick(new SecureRandom());
+        this.p1b = this.p1.MarshalBinary();
     }
 
     @Benchmark
@@ -71,12 +67,12 @@ public class Ed25519Bench {
     }
 
     @Benchmark
-    public void scalarEncode() {
+    public void scalarEncode() throws Exception {
         this.s1.MarshalBinary();
     }
 
     @Benchmark
-    public void scalarDecode() {
+    public void scalarDecode() throws Exception {
         this.s1.UnmarshalBinary(s1b);
     }
 
@@ -111,12 +107,12 @@ public class Ed25519Bench {
     }
 
     @Benchmark
-    public void pointEncode() {
+    public void pointEncode() throws Exception {
         this.p1.MarshalBinary();
     }
 
     @Benchmark
-    public void pointDecode() {
+    public void pointDecode() throws Exception {
         this.p1.UnmarshalBinary(p1b);
     }
 }

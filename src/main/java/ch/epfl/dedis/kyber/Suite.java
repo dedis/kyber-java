@@ -1,4 +1,5 @@
 package ch.epfl.dedis.kyber;
 
-public interface Suite extends random, Group, HashFactory, XOFFactory{
+// Suite is the sum of all suites mix-ins in Kyber.
+public interface Suite extends RandomGen, Group, HashFactory, XOFFactory{
 }

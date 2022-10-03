@@ -1,10 +1,9 @@
 package ch.epfl.dedis.kyber.curve.ed25519;
 
-import ch.epfl.dedis.kyber.Scalar;
+import ch.epfl.dedis.kyber.EdScalar;
 import ch.epfl.dedis.kyber.Suite;
-import ch.epfl.dedis.kyber.utils.key.pair;
-import javafx.util.Pair;
-import org.junit.Test;
+import ch.epfl.dedis.kyber.utils.key.Pair;
+import org.testng.annotations.Test;
 
 import java.security.NoSuchAlgorithmException;
 import java.security.SecureRandom;
@@ -15,9 +14,9 @@ public class CurveTest {
 
     @Test
     public void KeyGenerationTests() {
-        pair p1 = pair.NewKeyPair(tsuite);
-        pair p2 = pair.NewKeyPair(tsuite);
-        assert(!p1.Private.Equal(p2.Private));
+        Pair p1 = Pair.NewKeyPair(tsuite);
+        Pair p2 = Pair.NewKeyPair(tsuite);
+        assert (!p1.Private.Equal(p2.Private));
     }
 
     @Test
@@ -27,20 +26,25 @@ public class CurveTest {
         sr1.setSeed(seed);
         SecureRandom sr2 = SecureRandom.getInstance("SHA1PRNG");
         sr2.setSeed(seed);
-        pair p1 = pair.NewKeyPair(new SuiteEd25519(sr1));
-        pair p2 = pair.NewKeyPair(new SuiteEd25519(sr2));
-        assert(p1.Private.Equal(p2.Private));
+        Pair p1 = Pair.NewKeyPair(new SuiteEd25519(sr1));
+        Pair p2 = Pair.NewKeyPair(new SuiteEd25519(sr2));
+        assert (p1.Private.Equal(p2.Private));
     }
 
     @Test
     public void NewKey() throws NoSuchAlgorithmException {
         SecureRandom sr = tsuite.RandomStream();
-        curve cr = new curve();
+        Curve cr = new Curve();
         for (int i = 0; i < 1000000; i++) {
-            Scalar s = cr.NewKey(sr);
-            Pair<byte[], Exception> p = s.MarshalBinary();
-            byte[] bytes = p.getKey();
-            assert((bytes[0] & 7) == 0);
+            EdScalar s = cr.NewKey(sr);
+            try {
+                byte[] bytes = s.MarshalBinary();
+                assert ((bytes[0] & 7) == 0);
+            }
+            catch (Exception E) {
+                System.err.println(E);
+                assert (false);          // intentionally failing the assertion to indicate that an error has occurred
+            }
         }
     }
 }
